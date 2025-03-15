@@ -16,6 +16,10 @@ from .models import (
     CartItem,
     Challenge,
     ChallengeSubmission,
+    Quiz, 
+    QuizOption, 
+    QuizQuestion, 
+    QuizSubmission,
     Course,
     CourseMaterial,
     CourseProgress,
@@ -387,6 +391,24 @@ class ChallengeAdmin(admin.ModelAdmin):
 @admin.register(ChallengeSubmission)
 class ChallengeSubmissionAdmin(admin.ModelAdmin):
     list_display = ("user", "challenge", "submitted_at")
+
+@admin.register(Quiz)
+class QuizAdmin(admin.ModelAdmin):
+    list_display = ("title", "start_date", "start_time", "end_date", "end_time")
+
+@admin.register(QuizQuestion) 
+class QuizQuestionAdmin(admin.ModelAdmin):
+    list_display = ("question_text", "quiz")
+
+@admin.register(QuizOption)
+class QuizOptionAdmin(admin.ModelAdmin):
+    list_display = ("option_text", "question", "is_correct")
+
+@admin.register(QuizSubmission)
+class QuizSubmissionAdmin(admin.ModelAdmin):
+    list_display = ("user", "quiz", "score") 
+
+    
 
 
 # Unregister the default User admin and register our custom one
