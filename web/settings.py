@@ -3,6 +3,8 @@ import sys
 from pathlib import Path
 
 import environ
+from cryptography.fernet import Fernet
+from django.core.exceptions import ImproperlyConfigured
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -358,3 +360,13 @@ USE_X_FORWARDED_HOST = True
 # GitHub API Token for fetching contributor data
 # Use empty string as default to avoid errors when the token is not set
 GITHUB_TOKEN = os.environ.get("GITHUB_TOKEN", "")
+
+
+ENCRYPTION_KEY = os.environ.get("ENCRYPTION_KEY", None)
+if not ENCRYPTION_KEY:
+    if DEBUG:
+        # Only in development environments
+        ENCRYPTION_KEY = Fernet.generate_key()
+        print("WARNING: Generated temporary encryption key. In production, set ENCRYPTION_KEY environment variable!")
+    else:
+        raise ImproperlyConfigured("ENCRYPTION_KEY must be set in production environments")
